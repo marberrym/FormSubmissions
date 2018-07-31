@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Forms!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+</head>
+<body>
+    <div class="form_outter">
+        <h1>Coffee Form</h1>
+        <div class="form_div">
+            <form action="" method="post" class="coffeeorderform">
+                <label>
+                    <span class="labelheader">Your coffee order:</span>  
+                    <input class="wideinput" name="coffee_order" required>
+                </label>
+                <label>
+                    <span class="labelheader">Your email address:</span>
+                    <input class="wideinput" name="email" required>
+                </label>
+                <hr>
+                <label>
+                    <input class="inline" type="radio" name="size" value="short">
+                    <span>Short</span>
+                    <div></div>
+                    <input class="inline" type="radio" name="size" value="tall">
+                    <span>Tall</span>
+                    <div></div>
+                    <input class="inline" type="radio" name="size" value="grande">
+                    <span>Grande</span>
+                </label>
+                <hr>
+                <label>
+                    <span class="labelheader">Flavorshot:</span>
+                    <input class="wideinput" name="flavor" list="flavor_shots">
+                    <datalist id="flavor_shots">
+                        <option value="Hazlenut">
+                        <option value="French Vanilla">
+                        <option value="Mocha">
+                        <option value="Caramel">
+                        <option value="Peppermint">
+                    </datalist>
+                </label>
+                <label>
+                    <span class="labelheader">Caffeine Content:</span>
+                    <input class="wideinput" name="caffeine" type="range" min="0" max="350">
+                </label>
+                <label>
+                    <input class="inline" type="checkbox" name="waiver">
+                    <label>I consent to the caffeine overdose!</label>
+                </label>
+                <div></div>
+                <label style="text-align: center">
+                    <input class="inline" name="submission" type="submit" value="Submit Dat Shit!">
+                    <input class="inline" name="reset" type="submit" value="Reset Dat Shit!">
+                </label>
+            </form>
+        </div>
+        <div class="form_div order_list">
+            
+        </div>
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>

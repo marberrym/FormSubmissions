@@ -1,0 +1,66 @@
+input {
+    display: block;
+    margin: 5px;
+    padding: 5px;
+}
+
+div {
+    display: block;
+}
+
+h1 {
+    text-align: center;
+    font-size: 80px;
+    font-family: Lobster;
+    background-color: burlywood;
+    border-radius: 10px;
+    border: 2px solid white;
+    padding: 20px;
+    margin: 30px;
+    text-shadow:
+		-1px -1px 0 white,
+		1px -1px 0 white,
+		-1px 1px 0 white,
+		1px 1px 0 white;
+}
+
+.wideinput {
+    width: 500px;
+}
+
+.inline {
+    display: inline;
+    text-align: center;
+}
+
+
+.form_div {
+    padding: 20px;
+    border: 2px solid white;
+    width: 540px;
+    border-radius: 10px;
+    margin: 10px;
+    background-color: burlywood;
+}
+
+.labelheader{
+    display: block;
+}
+
+.coffeeorderform {
+    font: bold 18px Arial;
+    font-family: Lobster;
+    text-shadow:
+		-1px -1px 0 white,
+		1px -1px 0 white,
+		-1px 1px 0 white,
+		1px 1px 0 white;
+}
+
+.form_outter {
+    border: 2px solid black;
+    padding: 10px;
+    width: 600px;
+    border-radius: 10px;
+    background-color: rgb(104, 49, 27);
+}
