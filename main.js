@@ -1,5 +1,4 @@
  var ordernumber = 1;
- 
  var coffeeInput = document.querySelector('[name="coffee_order"]');
  var contactemail = document.querySelector('[name="email"]');
  var coffeesize = document.querySelector('[name="size"]:checked');
@@ -8,7 +7,7 @@
  var consent = document.querySelector('[name="waiver"]');
  var submitButton = document.querySelector('[name="submission"]');
  var form = document.querySelector('.coffeeorderform');
- var resetButton = document.querySelector('[name="reset"]');
+ var completeButton = document.querySelector('[name="complete"]');
  var orderList = document.querySelector('.order_list');
 
 
@@ -41,6 +40,14 @@
     var orderStr = document.createElement('li');
     orderStr.textContent = order['caffeineStr'];
     unorderedlist.appendChild(orderStr);
+
+    var completeButton = document.createElement('button');
+    completeButton.textContent = 'Complete this order!';
+    unorderedlist.appendChild(completeButton);
+
+    completeButton.addEventListener('click', function(event) {
+        orderList.removeChild(newDiv);
+    });
 
     newDiv.appendChild(unorderedlist);
 
