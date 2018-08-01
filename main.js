@@ -9,11 +9,31 @@ var submitButton = document.querySelector('[name="submission"]');
 var form = document.querySelector('.coffeeorderform');
 var completeButton = document.querySelector('[name="complete"]');
 var orderList = document.querySelector('.order_list');
-var URL = 'https://dc-coffeerun.herokuapp.com/api/coffeeorders';
+var serverURL = 'https://dc-coffeerun.herokuapp.com/api/coffeeorders';
 var orders = [];
 
-var storeData = function() {
-    localStorage.setItem('coffee-orders', JSON.stringify(orders));
+var serverPush = function(server, object) {
+    $.post(server, object, function(resp) {
+        console.log(resp);
+    });
+}
+
+var serverGet = function(server) {
+    $.get(server, function(data) {
+        console.log(data);
+        for(order of Object.values(data)) {
+            createDOM(order);
+        }
+    });  
+}
+
+var serverRemove = function(server, post) {
+    $.ajax(server + "/" + post.emailAddress, {
+        method: "DELETE",
+        success: function(orderDone) {
+                    console.log(orderDone)
+                    }})
+        
 }
 
 var createDOM = function(order) {
@@ -21,24 +41,26 @@ var createDOM = function(order) {
     var unorderedlist = document.createElement('ul');
 
     var headOrder = document.createElement('h3');
-    headOrder.textContent = order['orderNumber'];
+    headOrder.textContent = "Order Number: " + order['_id'];
     newDiv.appendChild(headOrder);
 
     var orderStyle = document.createElement('li')
-    orderStyle.textContent = order['coffeeStyle'];
+    orderStyle.textContent = order['coffee'];
     unorderedlist.appendChild(orderStyle);
 
-    var orderEmail = document.createElement('li');
-    orderEmail.textContent = order['contactEmail'];
-    unorderedlist.appendChild(orderEmail);
+    var orderStr = document.createElement('li');
+    orderStr.textContent = order['strength'];
+    unorderedlist.appendChild(orderStr);
 
     var orderFlavor = document.createElement('li');
-    orderFlavor.textContent = order['coffeeFlavor'];
+    orderFlavor.textContent = order['flavor'];
     unorderedlist.appendChild(orderFlavor);
 
-    var orderStr = document.createElement('li');
-    orderStr.textContent = order['caffeineStr'];
-    unorderedlist.appendChild(orderStr);
+    var orderEmail = document.createElement('li');
+    orderEmail.textContent = order['emailAddress'];
+    unorderedlist.appendChild(orderEmail);
+
+    
 
     var completeButton = document.createElement('button');
     completeButton.classList.add('completebutton');
@@ -47,22 +69,11 @@ var createDOM = function(order) {
 
     completeButton.addEventListener('click', function(event) {
         orderList.removeChild(newDiv);
-        orders.pop();
+        serverRemove(serverURL, order);
     });
 
     newDiv.appendChild(unorderedlist);
     orderList.appendChild(newDiv);
-}
-
-var getData = function() {
-    var prevorders = JSON.parse(localStorage.getItem('coffee-orders'));
-    if (prevorders != null) {
-        for (var order of prevorders) {
-            createDOM(order);
-            orders.push(order);
-            localStorage.setItem('coffee-orders', JSON.stringify(orders));
-        }
-    };
 }
 
 form.addEventListener('submit', function(event) {
@@ -74,34 +85,19 @@ form.addEventListener('submit', function(event) {
     var str = caffcontent.value;
     var header = "Order Number: " + ordernumber;
     
-    var orderObject = { orderNumber: header,
-                        coffeeStyle: style,
-                        contactEmail: email,
-                        coffeeFlavor: flavor,
-                        caffeineStr: str
+    var orderObject = { name: header,
+                        coffee: style,
+                        strength: str,
+                        flavor: flavor,
+                        emailAddress: email
     };
 
     orders.push(orderObject);
     createDOM(orderObject);
-
-    var test = {
-        name: 'Heres JOHNNY!',
-        coffee: 'beanwater',
-        strength: '100',
-        flavor: 'NatalysucksatPINGpong',
-        size: 'Ibeathimwithmyphone',
-        emailAddress: 'bestpingpongplayaaaa@forestgump.com'
-    }
-    $.post(URL, test, function(resp) {
-        console.log(resp);
-    });
+    serverPush(serverURL, orderObject);
 
     ordernumber++;
     
 });
 
-
-$.get(URL, function(data) {
-    console.log(data);
-});
-getData();
+serverGet(serverURL);
