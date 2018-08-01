@@ -1,16 +1,6 @@
-var ordernumber = 1;
-var coffeeInput = document.querySelector('[name="coffee_order"]');
-var contactemail = document.querySelector('[name="email"]');
-var coffeesize = document.querySelector('[name="size"]:checked');
-var coffeeflavor = document.querySelector('[name="flavor"]');
-var caffcontent = document.querySelector('[name="caffeine"]');
-var consent = document.querySelector('[name="waiver"]');
-var submitButton = document.querySelector('[name="submission"]');
+(function() {
 var form = document.querySelector('.coffeeorderform');
-var completeButton = document.querySelector('[name="complete"]');
-var orderList = document.querySelector('.order_list');
 var serverURL = 'https://dc-coffeerun.herokuapp.com/api/coffeeorders';
-var orders = [];
 
 var serverPush = function(server, object) {
     $.post(server, object, function(resp) {
@@ -32,16 +22,23 @@ var serverRemove = function(server, post) {
         method: "DELETE",
         success: function(orderDone) {
                     console.log(orderDone)
-                    }})
-        
+                    }});
 }
 
 var createDOM = function(order) {
+    var serverURL = 'https://dc-coffeerun.herokuapp.com/api/coffeeorders';
+    var orderList = document.querySelector('.order_list');
+    var completeButton = document.querySelector('[name="complete"]');
     var newDiv = document.createElement('div');
     var unorderedlist = document.createElement('ul');
 
     var headOrder = document.createElement('h3');
-    headOrder.textContent = "Order Number: " + order['_id'];
+    if (order._id != undefined) {
+        headOrder.textContent = "Order Number: " + order['_id'];
+    } else {
+        headOrder.textContent = "New Local Order";
+    }
+    
     newDiv.appendChild(headOrder);
 
     var orderStyle = document.createElement('li')
@@ -60,8 +57,6 @@ var createDOM = function(order) {
     orderEmail.textContent = order['emailAddress'];
     unorderedlist.appendChild(orderEmail);
 
-    
-
     var completeButton = document.createElement('button');
     completeButton.classList.add('completebutton');
     completeButton.textContent = 'Complete this order!';
@@ -78,28 +73,19 @@ var createDOM = function(order) {
 
 form.addEventListener('submit', function(event) {
     event.preventDefault();
-
-    var style = coffeeInput.value;
-    var email = contactemail.value;
-    var flavor = coffeeflavor.value;
-    var str = caffcontent.value;
-    var header = "Order Number: " + ordernumber;
-    
-    var orderObject = { name: header,
-                        coffee: style,
-                        strength: str,
-                        flavor: flavor,
-                        emailAddress: email
+    var coffeeInput = document.querySelector('[name="coffee_order"]');
+    var contactemail = document.querySelector('[name="email"]');
+    var coffeeflavor = document.querySelector('[name="flavor"]');
+    var caffcontent = document.querySelector('[name="caffeine"]');
+  
+    var orderObject = { name: "Order",
+                        coffee: coffeeInput.value,
+                        strength: caffcontent.value,
+                        flavor: coffeeflavor.value,
+                        emailAddress: contactemail.value
     };
 
-    orders.push(orderObject);
     createDOM(orderObject);
-    serverPush(serverURL, orderObject);
-
-    ordernumber++;
-    
+    serverPush(serverURL, orderObject);    
 });
-
-
-
-serverGet(serverURL);
+serverGet(serverURL)})();
