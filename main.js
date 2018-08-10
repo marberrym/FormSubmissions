@@ -2,12 +2,6 @@
 var form = document.querySelector('.coffeeorderform');
 var serverURL = 'https://dc-coffeerun.herokuapp.com/api/coffeeorders';
 
-// var serverPush = function(server, object) {
-//     $.post(server, object, function(resp) {
-//         console.log(resp);
-//     });
-// }
-
 var serverPush = function(server, object) {
     var promise = fetch(server, {
             method: 'POST',
