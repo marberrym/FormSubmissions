@@ -2,27 +2,47 @@
 var form = document.querySelector('.coffeeorderform');
 var serverURL = 'https://dc-coffeerun.herokuapp.com/api/coffeeorders';
 
+// var serverPush = function(server, object) {
+//     $.post(server, object, function(resp) {
+//         console.log(resp);
+//     });
+// }
+
 var serverPush = function(server, object) {
-    $.post(server, object, function(resp) {
-        console.log(resp);
-    });
+    var promise = fetch(server, {
+            method: 'POST',
+            body: JSON.stringify(object),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    promise.then(res => res.json());
+    promise.catch(error => console.error('Error:', error));
+    promise.then(response => console.log('Success:', response));
 }
 
 var serverGet = function(server) {
-    $.get(server, function(data) {
-        console.log(data);
-        for(order of Object.values(data)) {
-            createDOM(order);
-        }
-    });  
-}
+    fetch(server)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(myJson) {
+            for(object of Object.values(myJson)) {
+                createDOM(object);
+            }
+            console.log(myJson);
+        })
+};
+
 
 var serverRemove = function(server, post) {
-    $.ajax(server + "/" + post.emailAddress, {
+    var promise = fetch(server, {
         method: "DELETE",
+        body: JSON.stringify(post),
         success: function(orderDone) {
-                    console.log(orderDone)
-                    }});
+            console.log(orderDone)
+        }
+    })
 }
 
 var createDOM = function(order) {
@@ -88,4 +108,5 @@ form.addEventListener('submit', function(event) {
     createDOM(orderObject);
     serverPush(serverURL, orderObject);    
 });
-serverGet(serverURL)})();
+serverGet(serverURL);
+})();
